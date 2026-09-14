@@ -1,0 +1,32 @@
+# clang-format configuration for kepler-obake.
+#
+# The style reproduces the formatting used in src/: 4-space indentation,
+# Allman braces for functions, classes and namespaces (K&R for control
+# statements), no namespace-body indentation, and parameters aligned with
+# the opening bracket.
+
+BasedOnStyle: LLVM
+
+IndentWidth: 4
+ContinuationIndentWidth: 4
+ColumnLimit: 100
+
+AccessModifierOffset: -4
+
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: Never
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+
+NamespaceIndentation: None
+
+AllowShortFunctionsOnASingleLine: None
+
+SortIncludes: true

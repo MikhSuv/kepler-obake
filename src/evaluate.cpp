@@ -63,8 +63,9 @@ cnum_t evaluate(const series &s, const obake::symbol_map<cnum_t> &sm)
     retval.reserve(num_points);
 
     // The distance between consecutive grid points.
-    const auto delta =
-        (num_points > 1u) ? (lambda_end - lambda_start) / static_cast<double>(num_points - 1u) : 0.0;
+    const auto delta = (num_points > 1u)
+                           ? (lambda_end - lambda_start) / static_cast<double>(num_points - 1u)
+                           : 0.0;
 
     for (::std::size_t i = 0u; i < num_points; ++i) {
         const auto lambda = lambda_start + static_cast<double>(i) * delta;

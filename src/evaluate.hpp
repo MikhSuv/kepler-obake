@@ -49,8 +49,7 @@ namespace kepler
 ///
 /// @throws ::std::invalid_argument if \p num_points is zero.
 [[nodiscard]] ::std::vector<cnum_t> evaluate_on_lambda_range(const series &s, cnum_t X_val,
-                                                             cnum_t Xc_val,
-                                                             real_t lambda_start,
+                                                             cnum_t Xc_val, real_t lambda_start,
                                                              real_t lambda_end,
                                                              ::std::size_t num_points);
 
