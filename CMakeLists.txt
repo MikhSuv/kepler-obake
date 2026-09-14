@@ -13,5 +13,13 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # mp++, Boost, fmt, TBB, libbacktrace (см. медиаторы obake).
 find_package(obake REQUIRED)
 
+# Статическая библиотека: ряды z1/z2 и численная оценка.
+add_library(kepler STATIC
+    src/series.cpp
+    src/evaluate.cpp)
+target_include_directories(kepler PUBLIC src)
+target_link_libraries(kepler PUBLIC obake::obake)
+
+# Демонстрационный исполняемый файл.
 add_executable(kepler_z1 src/main.cpp)
-target_link_libraries(kepler_z1 PRIVATE obake::obake)
+target_link_libraries(kepler_z1 PRIVATE kepler)
