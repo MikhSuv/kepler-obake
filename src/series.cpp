@@ -22,16 +22,13 @@ namespace kepler
 
 namespace detail
 {
+// TODO:  Написать разложения sin z и cos z
 
-pser_t sqrt_one_minus_tmp(::std::int64_t truncation_degree)
+pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree)
 {
-    auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
-    (void)L;
-    // tmp = -X * Xc / 4  (the argument of the binomial square root).
-    auto tmp = rat_t{-1, 4} * X * Xc;
     pser_t sqrt{rat_t{1}};
     for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
-        sqrt += mppp::binomial(rat_t{1, 2}, k) * obake::pow(tmp, k);
+        sqrt += mppp::binomial(rat_t{1, 2}, k) * obake::pow(t, k);
     }
     return sqrt;
 }
@@ -48,7 +45,8 @@ series series::z1(::std::int64_t truncation_degree)
 {
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = I * rat_t{1, 2} * (X * obake::pow(L, -1) - Xc * L);
-    auto sqrt = detail::sqrt_one_minus_tmp(truncation_degree);
+    auto t = rat_t{-1, 4} * X * Xc;
+    auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
     auto z1 = factor * sqrt;
     obake::truncate_p_degree(z1, truncation_degree, obake::symbol_set{"X", "Xc"});
     return series{::std::move(z1), truncation_degree, obake::symbol_set{"X", "Xc"}};
@@ -58,7 +56,8 @@ series series::z2(::std::int64_t truncation_degree)
 {
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = rat_t{1, 2} * (X * obake::pow(L, -1) + Xc * L);
-    auto sqrt = detail::sqrt_one_minus_tmp(truncation_degree);
+    auto t = rat_t{-1, 4} * X * Xc;
+    auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
     auto z2 = factor * sqrt;
     obake::truncate_p_degree(z2, truncation_degree, obake::symbol_set{"X", "Xc"});
     return series{::std::move(z2), truncation_degree, obake::symbol_set{"X", "Xc"}};
