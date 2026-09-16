@@ -22,7 +22,6 @@ namespace kepler
 
 namespace detail
 {
-// TODO:  Написать разложения sin z и cos z
 
 pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree)
 {
@@ -83,6 +82,22 @@ series series::z2(::std::int64_t truncation_degree)
     auto z2 = factor * sqrt;
     obake::truncate_p_degree(z2, truncation_degree, obake::symbol_set{"X", "Xc"});
     return series{::std::move(z2), truncation_degree, obake::symbol_set{"X", "Xc"}};
+}
+
+series series::z3(::std::int64_t truncation_degree)
+{
+    auto [Z1, Z2] = obake::make_p_series<pser_t>("z1", "z2");
+    pser_t w = Z1;
+    obake::symbol_set ss{"z1", "z2"};
+
+    for (::std::int64_t n = 2; n <= truncation_degree; ++n) {
+        w = Z1 * detail::cos(w, truncation_degree) + Z2 * detail::sin(w, truncation_degree);
+
+        obake::truncate_p_degree(w, n + 1, ss);
+    }
+
+    obake::truncate_p_degree(w, truncation_degree, ss);
+    return series{std::move(w), truncation_degree, ss};
 }
 
 const pser_t &series::get_series() const

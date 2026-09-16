@@ -40,6 +40,7 @@ public:
     /// in the variables \f$X\f$ and \f$\bar{X}\f$.
     [[nodiscard]] static series z2(::std::int64_t truncation_degree);
 
+    [[nodiscard]] static series z3(::std::int64_t truncation_degree);
     /// Const access to the underlying obake series.
     [[nodiscard]] const pser_t &get_series() const;
 
