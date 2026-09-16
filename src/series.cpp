@@ -33,6 +33,28 @@ pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree)
     return sqrt;
 }
 
+pser_t sin(pser_t t, ::std::int64_t truncation_degree)
+{
+    pser_t series_term{t};
+    pser_t sin_series{series_term};
+    for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
+        series_term *= rat_t{-1, (2 * k) * (2 * k + 1)} * obake::pow(t, 2);
+        sin_series += series_term;
+    }
+    return sin_series;
+}
+
+pser_t cos(pser_t t, ::std::int64_t truncation_degree)
+{
+    pser_t series_term{rat_t{1}};
+    pser_t cos_series = series_term;
+    for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
+        series_term *= rat_t{-1, (2 * k) * (2 * k - 1)} * obake::pow(t, 2);
+        cos_series += series_term;
+    }
+    return cos_series;
+}
+
 } // namespace detail
 
 series::series(pser_t s, ::std::int64_t truncation_degree, obake::symbol_set variables)

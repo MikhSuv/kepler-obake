@@ -63,6 +63,12 @@ namespace detail
 /// Expand \f$\sqrt{1 - t}\f$ as a binomial series in
 /// \f$t\f$ up to order \p truncation_degree.
 [[nodiscard]] pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree);
+/// Expand \f$\sin t\f$ as a series in
+/// \f$t\f$ up to order \p truncation_degree.
+[[nodiscard]] pser_t sin(pser_t t, ::std::int64_t truncation_degree);
+/// Expand \f$\cos t\f$ as a series in
+/// \f$t\f$ up to order \p truncation_degree.
+[[nodiscard]] pser_t cos(pser_t t, ::std::int64_t truncation_degree);
 
 } // namespace detail
 
