@@ -18,7 +18,7 @@ add_library(kepler STATIC
     src/series.cpp
     src/evaluate.cpp
     src/exactkepler.cpp)
-target_include_directories(kepler PUBLIC src)
+target_include_directories(kepler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(kepler PUBLIC obake::obake)
 
 # Демонстрационный исполняемый файл.

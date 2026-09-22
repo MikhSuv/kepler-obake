@@ -4,10 +4,10 @@
 // Public License v. 2.0. If a copy of the MPL was not distributed
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "evaluate.hpp"
-#include "exactkepler.hpp"
-#include "series.hpp"
-#include "types.hpp"
+#include "kepler/evaluate.hpp"
+#include "kepler/exactkepler.hpp"
+#include "kepler/series.hpp"
+#include "kepler/types.hpp"
 #include <algorithm>
 #include <iostream>
 #include <mp++/real.hpp>

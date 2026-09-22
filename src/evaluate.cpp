@@ -4,7 +4,7 @@
 // Public License v. 2.0. If a copy of the MPL was not distributed
 // with this file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "evaluate.hpp"
+#include "kepler/evaluate.hpp"
 
 #include <stdexcept>
 
@@ -14,8 +14,8 @@
 #include <obake/key/key_evaluate.hpp>
 #include <obake/symbols.hpp>
 
-#include "series.hpp"
-#include "types.hpp"
+#include "kepler/series.hpp"
+#include "kepler/types.hpp"
 
 namespace kepler
 {
