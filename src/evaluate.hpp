@@ -53,6 +53,10 @@ namespace kepler
                                                              real_t lambda_end,
                                                              ::std::size_t num_points);
 
+[[nodiscard]] ::std::vector<real_t> evaluate_exact_func(real_t (&func)(real_t, real_t), real_t e,
+                                                        real_t lambda_start, real_t lambda_end,
+                                                        ::std::size_t num_points);
+
 } // namespace kepler
 
 #endif

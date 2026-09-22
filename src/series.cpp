@@ -11,6 +11,8 @@
 #include <mp++/rational.hpp>
 
 #include <obake/math/pow.hpp>
+#include <obake/math/subs.hpp>
+#include <obake/math/trim.hpp>
 #include <obake/math/truncate_p_degree.hpp>
 #include <obake/power_series/power_series.hpp>
 #include <obake/symbols.hpp>
@@ -61,12 +63,12 @@ series::series(pser_t s, ::std::int64_t truncation_degree, obake::symbol_set var
       m_variables(::std::move(variables))
 {
 }
-
 series series::z1(::std::int64_t truncation_degree)
 {
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = I * rat_t{1, 2} * (X * obake::pow(L, -1) - Xc * L);
     auto t = rat_t{-1, 4} * X * Xc;
+    // TODO: Переделать через подстановку
     auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
     auto z1 = factor * sqrt;
     obake::truncate_p_degree(z1, truncation_degree, obake::symbol_set{"X", "Xc"});
@@ -78,6 +80,7 @@ series series::z2(::std::int64_t truncation_degree)
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = rat_t{1, 2} * (X * obake::pow(L, -1) + Xc * L);
     auto t = rat_t{-1, 4} * X * Xc;
+    // TODO: Переделать через подстановку
     auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
     auto z2 = factor * sqrt;
     obake::truncate_p_degree(z2, truncation_degree, obake::symbol_set{"X", "Xc"});
@@ -88,16 +91,37 @@ series series::z3(::std::int64_t truncation_degree)
 {
     auto [Z1, Z2] = obake::make_p_series<pser_t>("z1", "z2");
     pser_t w = Z1;
+    auto [t] = obake::make_p_series<pser_t>("t");
     obake::symbol_set ss{"z1", "z2"};
+    pser_t cos{};
+    pser_t sin{};
 
     for (::std::int64_t n = 2; n <= truncation_degree; ++n) {
-        w = Z1 * detail::cos(w, truncation_degree) + Z2 * detail::sin(w, truncation_degree);
+
+        obake::symbol_map<pser_t> sm{{"t", w}};
+        cos = detail::cos(t, n);
+        sin = detail::sin(t, n);
+        cos = obake::subs(cos, sm);
+        sin = obake::subs(sin, sm);
+        w = Z1 * cos + Z2 * sin;
 
         obake::truncate_p_degree(w, n + 1, ss);
     }
 
     obake::truncate_p_degree(w, truncation_degree, ss);
+
     return series{std::move(w), truncation_degree, ss};
+}
+
+series series::z3_z1z2(series z1, series z2, series z3)
+{
+    ::std::int64_t truncation_degree = z1.get_truncation_degree();
+    obake::symbol_map<pser_t> sm{{"z1", z1.get_series()}, {"z2", z2.get_series()}};
+    pser_t res = obake::subs(z3.get_series(), sm);
+    res = obake::trim(res);
+    obake::symbol_set z3_ss = res.get_symbol_set();
+    obake::truncate_p_degree(res, truncation_degree, {"X", "Xc"});
+    return series{std::move(res), truncation_degree, z3_ss};
 }
 
 const pser_t &series::get_series() const

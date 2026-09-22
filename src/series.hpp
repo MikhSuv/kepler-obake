@@ -41,6 +41,8 @@ public:
     [[nodiscard]] static series z2(::std::int64_t truncation_degree);
 
     [[nodiscard]] static series z3(::std::int64_t truncation_degree);
+
+    [[nodiscard]] static series z3_z1z2(series z1, series z2, series z3);
     /// Const access to the underlying obake series.
     [[nodiscard]] const pser_t &get_series() const;
 

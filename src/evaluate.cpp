@@ -85,4 +85,23 @@ cnum_t evaluate(const series &s, const obake::symbol_map<cnum_t> &sm)
     return retval;
 }
 
+::std::vector<real_t> evaluate_exact_func(real_t (&func)(real_t, real_t), real_t e,
+                                          real_t lambda_start, real_t lambda_end,
+                                          ::std::size_t num_points)
+{
+    if (num_points == 0u) {
+        throw ::std::invalid_argument("The number of grid points must be positive");
+    }
+    ::std::vector<real_t> retval;
+    const auto delta = (num_points > 1u)
+                           ? (lambda_end - lambda_start) / static_cast<double>(num_points - 1u)
+                           : 0.0;
+    for (::std::size_t i = 0u; i < num_points; i++) {
+        const auto lambda = lambda_start + static_cast<double>(i) * delta;
+        retval.push_back(func(e, lambda));
+    }
+
+    return retval;
+}
+
 } // namespace kepler

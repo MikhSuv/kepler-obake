@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.16)
+cmake_minimum_required(VERSION 3.20)
 
 project(kepler-obake LANGUAGES CXX)
 
@@ -16,7 +16,8 @@ find_package(obake REQUIRED)
 # Статическая библиотека: ряды z1/z2 и численная оценка.
 add_library(kepler STATIC
     src/series.cpp
-    src/evaluate.cpp)
+    src/evaluate.cpp
+    src/exactkepler.cpp)
 target_include_directories(kepler PUBLIC src)
 target_link_libraries(kepler PUBLIC obake::obake)
 
