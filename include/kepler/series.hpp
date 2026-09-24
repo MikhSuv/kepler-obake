@@ -42,7 +42,7 @@ public:
 
     [[nodiscard]] static series z3(::std::int64_t truncation_degree);
 
-    [[nodiscard]] static series z3_z1z2(series z1, series z2, series z3);
+    [[nodiscard]] static series z3_z1z2(const series &z1, const series &z2, const series &z3);
     /// Const access to the underlying obake series.
     [[nodiscard]] const pser_t &get_series() const;
 
@@ -53,7 +53,7 @@ public:
     [[nodiscard]] const obake::symbol_set &get_variables() const;
 
 private:
-    series(pser_t s, ::std::int64_t truncation_degree, obake::symbol_set variables);
+    series(const pser_t &s, ::std::int64_t truncation_degree, const obake::symbol_set &variables);
 
     pser_t m_series;
     ::std::int64_t m_truncation_degree;
@@ -65,13 +65,13 @@ namespace detail
 
 /// Expand \f$\sqrt{1 - t}\f$ as a binomial series in
 /// \f$t\f$ up to order \p truncation_degree.
-[[nodiscard]] pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree);
+[[nodiscard]] pser_t sqrt_one_minus_t(const pser_t &t, ::std::int64_t truncation_degree);
 /// Expand \f$\sin t\f$ as a series in
 /// \f$t\f$ up to order \p truncation_degree.
-[[nodiscard]] pser_t sin(pser_t t, ::std::int64_t truncation_degree);
+[[nodiscard]] pser_t sin(const pser_t &t, ::std::int64_t truncation_degree);
 /// Expand \f$\cos t\f$ as a series in
 /// \f$t\f$ up to order \p truncation_degree.
-[[nodiscard]] pser_t cos(pser_t t, ::std::int64_t truncation_degree);
+[[nodiscard]] pser_t cos(const pser_t &t, ::std::int64_t truncation_degree);
 
 } // namespace detail
 

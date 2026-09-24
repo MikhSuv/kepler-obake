@@ -25,7 +25,7 @@ namespace kepler
 namespace detail
 {
 
-pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree)
+pser_t sqrt_one_minus_t(const pser_t &t, ::std::int64_t truncation_degree)
 {
     pser_t sqrt{rat_t{1}};
     for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
@@ -34,7 +34,7 @@ pser_t sqrt_one_minus_t(pser_t t, ::std::int64_t truncation_degree)
     return sqrt;
 }
 
-pser_t sin(pser_t t, ::std::int64_t truncation_degree)
+pser_t sin(const pser_t &t, ::std::int64_t truncation_degree)
 {
     pser_t series_term{t};
     pser_t sin_series{series_term};
@@ -45,7 +45,7 @@ pser_t sin(pser_t t, ::std::int64_t truncation_degree)
     return sin_series;
 }
 
-pser_t cos(pser_t t, ::std::int64_t truncation_degree)
+pser_t cos(const pser_t &t, ::std::int64_t truncation_degree)
 {
     pser_t series_term{rat_t{1}};
     pser_t cos_series = series_term;
@@ -58,7 +58,8 @@ pser_t cos(pser_t t, ::std::int64_t truncation_degree)
 
 } // namespace detail
 
-series::series(pser_t s, ::std::int64_t truncation_degree, obake::symbol_set variables)
+series::series(const pser_t &s, ::std::int64_t truncation_degree,
+               const obake::symbol_set &variables)
     : m_series(::std::move(s)), m_truncation_degree(truncation_degree),
       m_variables(::std::move(variables))
 {
@@ -113,7 +114,7 @@ series series::z3(::std::int64_t truncation_degree)
     return series{std::move(w), truncation_degree, ss};
 }
 
-series series::z3_z1z2(series z1, series z2, series z3)
+series series::z3_z1z2(const series &z1, const series &z2, const series &z3)
 {
     ::std::int64_t truncation_degree = z1.get_truncation_degree();
     obake::symbol_map<pser_t> sm{{"z1", z1.get_series()}, {"z2", z2.get_series()}};
