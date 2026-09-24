@@ -17,8 +17,9 @@ int main()
 {
     ::std::cout.precision(16);
     //
-    auto z1 = kepler::series::z1(15);
-    auto z2 = kepler::series::z2(15);
+    int deg = 20;
+    auto z1 = kepler::series::z1(deg);
+    auto z2 = kepler::series::z2(deg);
     //
     ::std::cout << z1.get_series().size() << '\n' << '\n';
     ::std::cout << z2.get_series().size() << '\n' << '\n';
@@ -33,7 +34,7 @@ int main()
     //     ::std::cout << v << '\n';
     // }
 
-    auto z3 = kepler::series::z3(10);
+    auto z3 = kepler::series::z3(deg);
     ::std::cout << "Создан ряд z3. количество слагаемых ";
     ::std::cout << z3.get_series().size() << '\n';
 
