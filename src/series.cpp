@@ -68,9 +68,10 @@ series series::z1(::std::int64_t truncation_degree)
 {
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = I * rat_t{1, 2} * (X * obake::pow(L, -1) - Xc * L);
-    auto t = rat_t{-1, 4} * X * Xc;
-    // TODO: Переделать через подстановку
+    auto [t] = obake::make_p_series<pser_t>("t");
     auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
+    obake::symbol_map<pser_t> sm{{"t", rat_t{-1, 4} * X * Xc}};
+    sqrt = obake::subs(sqrt, sm);
     auto z1 = factor * sqrt;
     obake::truncate_p_degree(z1, truncation_degree, obake::symbol_set{"X", "Xc"});
     return series{::std::move(z1), truncation_degree, obake::symbol_set{"X", "Xc"}};
@@ -80,9 +81,10 @@ series series::z2(::std::int64_t truncation_degree)
 {
     auto [X, Xc, L] = obake::make_p_series<pser_t>("X", "Xc", "L");
     auto factor = rat_t{1, 2} * (X * obake::pow(L, -1) + Xc * L);
-    auto t = rat_t{-1, 4} * X * Xc;
-    // TODO: Переделать через подстановку
+    auto [t] = obake::make_p_series<pser_t>("t");
     auto sqrt = detail::sqrt_one_minus_t(t, truncation_degree);
+    obake::symbol_map<pser_t> sm{{"t", rat_t{-1, 4} * X * Xc}};
+    sqrt = obake::subs(sqrt, sm);
     auto z2 = factor * sqrt;
     obake::truncate_p_degree(z2, truncation_degree, obake::symbol_set{"X", "Xc"});
     return series{::std::move(z2), truncation_degree, obake::symbol_set{"X", "Xc"}};
