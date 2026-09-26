@@ -6,10 +6,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Экспортировать compile_commands.json (для clangd).
+# Export compile_commands.json (for clangd).
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Флаги компиляции для Debug и Release (GCC/Clang).
+# Debug and Release compilation flags (GCC/Clang).
 if(MSVC)
     set(CMAKE_CXX_FLAGS_DEBUG "/W4 /permissive- /Z7")
     set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/fsanitize=address")
@@ -21,11 +21,11 @@ else()
     set(CMAKE_CXX_FLAGS_RELEASE "-O3 -march=native -DNDEBUG")
 endif()
 
-# obake-config.cmake находит obake::obake, что тянет за собой
-# mp++, Boost, fmt, TBB, libbacktrace (см. медиаторы obake).
+# obake-config.cmake provides obake::obake, which pulls in mp++, Boost, fmt,
+# TBB and libbacktrace (see obake's mediators).
 find_package(obake REQUIRED)
 
-# Статическая библиотека: ряды z1/z2 и численная оценка.
+# Static library: z1/z2 series and numerical evaluation.
 add_library(kepler STATIC
     src/series.cpp
     src/evaluate.cpp
@@ -33,6 +33,6 @@ add_library(kepler STATIC
 target_include_directories(kepler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(kepler PUBLIC obake::obake)
 
-# Демонстрационный исполняемый файл.
+# Demo executable.
 add_executable(kepler_z1 src/main.cpp)
 target_link_libraries(kepler_z1 PRIVATE kepler)

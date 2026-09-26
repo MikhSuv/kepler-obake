@@ -64,5 +64,8 @@ int main()
                     << '\n';
     }
     ::std::cout << "Max error :" << *std::max_element(abs_err.begin(), abs_err.end()) << '\n';
+    z1.save("z1.txt");
+    z2.save("z2.txt");
+    z3.save("z3.txt");
     return 0;
 }

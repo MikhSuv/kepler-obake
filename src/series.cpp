@@ -10,8 +10,6 @@
 #include <stdexcept>
 #include <utility>
 
-#include <boost/archive/binary_iarchive.hpp>
-#include <boost/archive/binary_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
 
@@ -157,60 +155,28 @@ const obake::symbol_set &series::get_variables() const
     return m_variables;
 }
 
-void series::save(const ::std::string &path, archive_type type) const
+void series::save(const ::std::string &path) const
 {
-    auto mode = ::std::ios::out;
-    if (type == archive_type::binary) {
-        mode |= ::std::ios::binary;
-    }
-    ::std::ofstream ofs(path, mode);
+    ::std::ofstream ofs(path);
     if (!ofs) {
         throw ::std::runtime_error("Unable to open file for writing: " + path);
     }
-    switch (type) {
-    case archive_type::text: {
-        boost::archive::text_oarchive oa(ofs);
-        oa << *this;
-        break;
-    }
-    case archive_type::binary: {
-        boost::archive::binary_oarchive oa(ofs);
-        oa << *this;
-        break;
-    }
-    default:
-        throw ::std::invalid_argument("Unknown archive type");
-    }
+    boost::archive::text_oarchive oa(ofs);
+    oa << *this;
     if (!ofs) {
         throw ::std::runtime_error("Error while writing file: " + path);
     }
 }
 
-series series::load(const ::std::string &path, archive_type type)
+series series::load(const ::std::string &path)
 {
-    auto mode = ::std::ios::in;
-    if (type == archive_type::binary) {
-        mode |= ::std::ios::binary;
-    }
-    ::std::ifstream ifs(path, mode);
+    ::std::ifstream ifs(path);
     if (!ifs) {
         throw ::std::runtime_error("Unable to open file for reading: " + path);
     }
     series retval;
-    switch (type) {
-    case archive_type::text: {
-        boost::archive::text_iarchive ia(ifs);
-        ia >> retval;
-        break;
-    }
-    case archive_type::binary: {
-        boost::archive::binary_iarchive ia(ifs);
-        ia >> retval;
-        break;
-    }
-    default:
-        throw ::std::invalid_argument("Unknown archive type");
-    }
+    boost::archive::text_iarchive ia(ifs);
+    ia >> retval;
     return retval;
 }
 
