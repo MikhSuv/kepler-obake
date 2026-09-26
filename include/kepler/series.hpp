@@ -8,6 +8,12 @@
 #define KEPLER_SERIES_HPP
 
 #include <cstdint>
+#include <stdexcept>
+#include <string>
+
+#include <boost/serialization/access.hpp>
+#include <boost/serialization/complex.hpp>
+#include <boost/serialization/split_member.hpp>
 
 #include <obake/symbols.hpp>
 
@@ -52,12 +58,84 @@ public:
     /// The set of variables on which truncation operates (e.g. {"X","Xc"}).
     [[nodiscard]] const obake::symbol_set &get_variables() const;
 
+    /// The types of serialization archives supported for file input/output
+    /// of a ::kepler::series object.
+    enum class archive_type {
+        /// Boost text archive: a portable sequence of space-separated
+        /// tokens encoding the object (not human-readable as a series).
+        text,
+        /// Boost binary archive: the most compact and fastest option, but
+        /// the output is machine-dependent.
+        binary,
+    };
+
+    /// Save the series to the file \p path using the archive \p type.
+    ///
+    /// Writes the object through a Boost serialization archive of the
+    /// requested type. Throws a ::std::runtime_error if the file cannot
+    /// be opened or written.
+    void save(const ::std::string &path, archive_type type) const;
+
+    /// Load a series from the file \p path using the archive \p type.
+    ///
+    /// Reads the object back from a Boost serialization archive of the
+    /// requested type and returns it. Throws a ::std::runtime_error if the
+    /// file cannot be opened or was written by an incompatible serialization
+    /// version.
+    [[nodiscard]] static series load(const ::std::string &path, archive_type type);
+
+    /// Construct an empty series.
+    ///
+    /// Used for deserialization: the series is subsequently populated by
+    /// reading from a Boost serialization archive.
+    series() = default;
+
 private:
     series(const pser_t &s, ::std::int64_t truncation_degree, const obake::symbol_set &variables);
 
     pser_t m_series;
     ::std::int64_t m_truncation_degree;
     obake::symbol_set m_variables;
+
+    // Serialisation.
+    friend class ::boost::serialization::access;
+
+    /// The version of the serialization format used by this class.
+    static inline constexpr unsigned s11n_version = 0u;
+
+    /// Serialize the object into a Boost archive \p ar.
+    ///
+    /// Writes the format version, the truncation degree, the set of
+    /// variables and the underlying obake power series (which, in turn,
+    /// serializes its own symbol set, truncation policy and all its
+    /// terms) into the archive.
+    template <class Archive>
+    void save(Archive &ar, unsigned) const
+    {
+        ar << s11n_version;
+        ar << m_truncation_degree;
+        ar << m_variables;
+        ar << m_series;
+    }
+
+    /// Deserialize the object from a Boost archive \p ar.
+    ///
+    /// Throws if the archive was written with an incompatible version
+    /// of the serialization format.
+    template <class Archive>
+    void load(Archive &ar, unsigned)
+    {
+        unsigned version;
+        ar >> version;
+        if (version != s11n_version) {
+            throw ::std::runtime_error(
+                "Incompatible kepler::series serialization version" + ::std::to_string(version));
+        }
+        ar >> m_truncation_degree;
+        ar >> m_variables;
+        ar >> m_series;
+    }
+    BOOST_SERIALIZATION_SPLIT_MEMBER()
 };
 
 namespace detail

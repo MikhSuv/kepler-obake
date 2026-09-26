@@ -6,7 +6,14 @@
 
 #include "kepler/series.hpp"
 
+#include <fstream>
+#include <stdexcept>
 #include <utility>
+
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
 
 #include <mp++/rational.hpp>
 
@@ -148,6 +155,63 @@ const pser_t &series::get_series() const
 const obake::symbol_set &series::get_variables() const
 {
     return m_variables;
+}
+
+void series::save(const ::std::string &path, archive_type type) const
+{
+    auto mode = ::std::ios::out;
+    if (type == archive_type::binary) {
+        mode |= ::std::ios::binary;
+    }
+    ::std::ofstream ofs(path, mode);
+    if (!ofs) {
+        throw ::std::runtime_error("Unable to open file for writing: " + path);
+    }
+    switch (type) {
+    case archive_type::text: {
+        boost::archive::text_oarchive oa(ofs);
+        oa << *this;
+        break;
+    }
+    case archive_type::binary: {
+        boost::archive::binary_oarchive oa(ofs);
+        oa << *this;
+        break;
+    }
+    default:
+        throw ::std::invalid_argument("Unknown archive type");
+    }
+    if (!ofs) {
+        throw ::std::runtime_error("Error while writing file: " + path);
+    }
+}
+
+series series::load(const ::std::string &path, archive_type type)
+{
+    auto mode = ::std::ios::in;
+    if (type == archive_type::binary) {
+        mode |= ::std::ios::binary;
+    }
+    ::std::ifstream ifs(path, mode);
+    if (!ifs) {
+        throw ::std::runtime_error("Unable to open file for reading: " + path);
+    }
+    series retval;
+    switch (type) {
+    case archive_type::text: {
+        boost::archive::text_iarchive ia(ifs);
+        ia >> retval;
+        break;
+    }
+    case archive_type::binary: {
+        boost::archive::binary_iarchive ia(ifs);
+        ia >> retval;
+        break;
+    }
+    default:
+        throw ::std::invalid_argument("Unknown archive type");
+    }
+    return retval;
 }
 
 } // namespace kepler
