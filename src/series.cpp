@@ -62,9 +62,9 @@ pser_t cos(const pser_t &base, ::std::int64_t truncation_degree)
 
 } // namespace detail
 
-series::series(const pser_t &s, ::std::int64_t truncation_degree,
+series::series(const pser_t &ser, ::std::int64_t truncation_degree,
                const obake::symbol_set &variables)
-    : m_series(::std::move(s)), m_truncation_degree(truncation_degree),
+    : m_series(::std::move(ser)), m_truncation_degree(truncation_degree),
       m_variables(::std::move(variables))
 {
 }
@@ -118,6 +118,24 @@ series series::z3(::std::int64_t truncation_degree)
     w = obake::trim(w);
     obake::set_truncation(w, truncation_degree, ss);
     return series{std::move(w), truncation_degree, ss};
+}
+
+series series::z4(::std::int64_t truncation_degree)
+{
+    auto [Z3] = obake::make_p_series<pser_t>("z3");
+    auto z4_s = kepler::detail::sin(Z3, truncation_degree);
+    obake::symbol_set ss{"z3"};
+    obake::set_truncation(z3_s, truncation_degree, ss);
+    return series{z4_s, truncation_degree, ss};
+}
+
+series series::z5(::std::int64_t truncation_degree)
+{
+    auto [Z3] = obake::make_p_series<pser_t>("z3");
+    auto z5_s = kepler::detail::cos(Z3, truncation_degree);
+    obake::symbol_set ss{"z3"};
+    obake::set_truncation(z5_s, truncation_degree, ss);
+    return series{z5_s, truncation_degree, ss};
 }
 
 series series::z3_z1z2(const series &z1, const series &z2, const series &z3)

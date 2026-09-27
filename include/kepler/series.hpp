@@ -47,6 +47,8 @@ public:
     [[nodiscard]] static series z2(::std::int64_t truncation_degree);
 
     [[nodiscard]] static series z3(::std::int64_t truncation_degree);
+    [[nodiscard]] static series z4(::std::int64_t truncation_degree);
+    [[nodiscard]] static series z5(::std::int64_t truncation_degree);
 
     [[nodiscard]] static series z3_z1z2(const series &z1, const series &z2, const series &z3);
     /// Const access to the underlying obake series.
