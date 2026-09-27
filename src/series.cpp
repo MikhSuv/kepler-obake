@@ -30,32 +30,31 @@ namespace kepler
 namespace detail
 {
 
-pser_t sqrt_one_minus_t(const pser_t &t, ::std::int64_t truncation_degree)
+pser_t sqrt_one_minus_t(const pser_t &base, ::std::int64_t truncation_degree)
 {
     pser_t sqrt{rat_t{1}};
     for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
-        sqrt += mppp::binomial(rat_t{1, 2}, k) * obake::pow(t, k);
+        sqrt += mppp::binomial(rat_t{1, 2}, k) * obake::pow(base, k);
     }
     return sqrt;
 }
-
-pser_t sin(const pser_t &t, ::std::int64_t truncation_degree)
+pser_t sin(const pser_t &base, ::std::int64_t truncation_degree)
 {
-    pser_t series_term{t};
+    pser_t series_term{base};
     pser_t sin_series{series_term};
     for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
-        series_term *= rat_t{-1, (2 * k) * (2 * k + 1)} * obake::pow(t, 2);
+        series_term *= rat_t{-1, (2 * k) * ((2 * k) + 1)} * obake::pow(base, 2);
         sin_series += series_term;
     }
     return sin_series;
 }
 
-pser_t cos(const pser_t &t, ::std::int64_t truncation_degree)
+pser_t cos(const pser_t &base, ::std::int64_t truncation_degree)
 {
     pser_t series_term{rat_t{1}};
     pser_t cos_series = series_term;
     for (::std::int64_t k = 1; k <= truncation_degree; ++k) {
-        series_term *= rat_t{-1, (2 * k) * (2 * k - 1)} * obake::pow(t, 2);
+        series_term *= rat_t{-1, (2 * k) * ((2 * k) - 1)} * obake::pow(base, 2);
         cos_series += series_term;
     }
     return cos_series;

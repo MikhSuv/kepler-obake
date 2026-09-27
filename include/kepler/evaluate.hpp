@@ -27,7 +27,7 @@ namespace kepler
 /// Wraps the per-term evaluation of the underlying obake series, converting
 /// the complex rational coefficients to the arbitrary-precision complex type
 /// \ref cnum_t.
-[[nodiscard]] cnum_t evaluate(const series &s, const obake::symbol_map<cnum_t> &sm);
+[[nodiscard]] cnum_t evaluate(const series &series, const obake::symbol_map<cnum_t> &symbol_map);
 
 /// Evaluate a Keplerian series on a uniform grid of the angle \f$\lambda\f$.
 ///
@@ -48,12 +48,14 @@ namespace kepler
 /// @return a vector holding the values of \p s at the grid points.
 ///
 /// @throws ::std::invalid_argument if \p num_points is zero.
-[[nodiscard]] ::std::vector<cnum_t> evaluate_on_lambda_range(const series &s, cnum_t X_val,
+
+[[nodiscard]] ::std::vector<cnum_t> evaluate_on_lambda_range(const series &series, cnum_t X_val,
                                                              cnum_t Xc_val, real_t lambda_start,
                                                              real_t lambda_end,
                                                              ::std::size_t num_points);
 
-[[nodiscard]] ::std::vector<real_t> evaluate_exact_func(real_t (&func)(real_t, real_t), real_t e,
+[[nodiscard]] ::std::vector<real_t> evaluate_exact_func(real_t (&func)(real_t, real_t),
+                                                        const real_t &eccentricity,
                                                         real_t lambda_start, real_t lambda_end,
                                                         ::std::size_t num_points);
 

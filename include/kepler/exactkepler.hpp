@@ -6,11 +6,11 @@
 
 namespace exact_kepler
 {
-kepler::real_t z1(kepler::real_t e, kepler::real_t M);
+kepler::real_t z1(kepler::real_t eccentricity, kepler::real_t Mean_anomaly);
 
-kepler::real_t z2(kepler::real_t e, kepler::real_t M);
+kepler::real_t z2(kepler::real_t eccentricity, kepler::real_t Mean_anomaly);
 
-kepler::real_t z3(kepler::real_t e, kepler::real_t M);
+kepler::real_t z3(kepler::real_t eccentricity, kepler::real_t Mean_anomaly);
 
 } // namespace exact_kepler
 //
