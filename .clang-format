@@ -30,3 +30,21 @@ NamespaceIndentation: None
 AllowShortFunctionsOnASingleLine: None
 
 SortIncludes: true
+
+# Break long expressions before the operator (obake convention).
+BreakBeforeBinaryOperators: All
+
+# Declarations of function templates always start on their own line.
+AlwaysBreakTemplateDeclarations: true
+
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignTrailingComments: false
+
+Cpp11BracedListStyle: true
+PointerAlignment: Right
+SpaceBeforeParens: ControlStatements
+MaxEmptyLinesToKeep: 1
+UseTab: Never
+Standard: c++20
