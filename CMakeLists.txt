@@ -33,8 +33,4 @@ add_library(kepler STATIC
 target_include_directories(kepler PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_link_libraries(kepler PUBLIC obake::obake)
 
-# Demo executable.
-add_executable(kepler_z1 src/main.cpp)
-target_link_libraries(kepler_z1 PRIVATE kepler)
-
 add_subdirectory(apps)
