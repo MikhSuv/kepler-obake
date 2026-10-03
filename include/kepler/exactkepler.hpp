@@ -56,6 +56,10 @@ namespace kepler::exact_kepler
 [[nodiscard]] kepler::real_t z3(const kepler::real_t &eccentricity,
                                 const kepler::real_t &mean_anomaly);
 
+[[nodiscard]] kepler::real_t z4(const kepler::real_t &eccentricity,
+                                const kepler::real_t &mean_anomaly);
+[[nodiscard]] kepler::real_t z5(const kepler::real_t &eccentricity,
+                                const kepler::real_t &mean_anomaly);
 } // namespace kepler::exact_kepler
 
 #endif

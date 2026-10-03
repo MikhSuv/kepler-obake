@@ -28,13 +28,13 @@ int main()
     // deduces the precision of a real from the type of its source (32 bits
     // for int, 53 bits for double), so explicit precision is required to
     // avoid capping the achievable accuracy regardless of the series degree.
-    const long wp = 256;
-    kepler::real_t e{"0.3", wp};
-    kepler::cnum_t X{
-        mppp::sqrt(kepler::real_t{2, wp})
-            * mppp::sqrt(kepler::real_t{1, wp} - mppp::sqrt(kepler::real_t{1, wp} - e * e)),
-        kepler::real_t{0, wp}};
-    const kepler::real_t PI{mppp::real_pi(wp)};
+    const long wort_precision = 256;
+    kepler::real_t e{"0.3", wort_precision};
+    kepler::cnum_t X{mppp::sqrt(kepler::real_t{2, wort_precision})
+                         * mppp::sqrt(kepler::real_t{1, wort_precision}
+                                      - mppp::sqrt(kepler::real_t{1, wort_precision} - e * e)),
+                     kepler::real_t{0, wort_precision}};
+    const kepler::real_t PI{mppp::real_pi(wort_precision)};
 
     // const auto vals = kepler::evaluate_on_lambda_range(z1, X, X, kepler::real_t{0}, 2 * PI, 10);
     // for (const auto &v : vals) {
@@ -51,11 +51,12 @@ int main()
 
     ::std::size_t N = 1000u;
 
-    const auto vals = kepler::evaluate_on_lambda_range(z3, X, X, kepler::real_t{0, wp}, 2 * PI, N);
+    const auto vals
+        = kepler::evaluate_on_lambda_range(z3, X, X, kepler::real_t{0, wort_precision}, 2 * PI, N);
     ::std::cout << "Все значения для ряда посчитаны \n";
 
-    const auto exact_vals = kepler::evaluate_exact_func(kepler::exact_kepler::z3, e,
-                                                        kepler::real_t{0, wp}, 2 * PI, N);
+    const auto exact_vals = kepler::evaluate_exact_func(
+        kepler::exact_kepler::z3, e, kepler::real_t{0, wort_precision}, 2 * PI, N);
     ::std::cout << "Все значения по формуле посчитаны \n";
     ::std::vector<kepler::real_t> abs_err;
     for (::std::size_t i = 0u; i < N; ++i) {

@@ -7,7 +7,7 @@ int main()
     auto degree = z3.get_truncation_degree();
     auto z4_in_z3 = kepler::series::z4(degree);
     z4_in_z3.save("z4_in_z3.txt");
-    auto z5_in_z3 = kepler::series::z4(degree);
+    auto z5_in_z3 = kepler::series::z5(degree);
     z5_in_z3.save("z5_in_z3.txt");
 
     auto z4 = kepler::series::z4z5_z3(z3, z4_in_z3);
