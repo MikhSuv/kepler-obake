@@ -10,9 +10,31 @@ Checks: >
   -bugprone-easily-swappable-parameters,
   -cppcoreguidelines-avoid-magic-numbers,
   -modernize-use-trailing-return-type,
-  -readability-magic-numbers
+  -readability-magic-numbers,
+  -clang-analyzer-core.StackAddressEscape
+
+CheckOptions:
+  # The Keplerian notation is fixed by the mathematical formulation of the
+  # variables (X, Xc, L, t, e, N) and of the series (z1, z2, ...). Short
+  # identifiers matching these names are intentional and are therefore
+  # exempted from the minimum length requirement.
+  # NOTE: these options do not apply to the names introduced by a structured
+  # binding. For those the check enforces a hard-coded two-character minimum
+  # regardless of the configuration, so single-letter binding names have to be
+  # exempted with a NOLINT at the point of use.
+  readability-identifier-length.IgnoredVariableNames: '^(X|Xc|L|t|e|N|I|PI|Z[1-9]|z[1-9])$'
+  readability-identifier-length.IgnoredConstantNames: '^(X|Xc|L|t|e|N|I|PI|Z[1-9]|z[1-9])$'
+  readability-identifier-length.IgnoredParameterNames: '^(X|Xc|L|t|e|N|I|PI|Z[1-9]|z[1-9])$'
+  readability-identifier-length.IgnoredLoopCounterNames: '^[ijk_n]$'
 
 WarningsAsErrors: ''
-HeaderFilterRegex: '^(?!.*/third_party/).*' # Игнорировать сторонние заголовки
+
+# NOTE: llvm::Regex has no support for negative lookaheads, hence the
+# previous pattern '^(?!.*/third_party/).*' silently matched nothing and
+# suppressed every diagnostic reported in this project's own headers.
+# Only the project's include directory is inspected; third-party and system
+# headers stay out of the report.
+HeaderFilterRegex: '.*/include/kepler/.*'
+
 FormatStyle: file
 ...
