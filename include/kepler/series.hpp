@@ -140,6 +140,7 @@ public:
     ///
     /// @return the series of \f$z_3\f$ as a function of \f$X, \bar{X}\f$.
     [[nodiscard]] static series z3_z1z2(const series &z1, const series &z2, const series &z3);
+    [[nodiscard]] static series z4z5_z3(const series &z3, const series &z45);
 
     /// Const access to the underlying obake series.
     ///

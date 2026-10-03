@@ -222,6 +222,23 @@ series series::z3_z1z2(const series &z1, const series &z2, const series &z3)
     return series{::std::move(result), truncation_degree, ::std::move(result_vars)};
 }
 
+series series::z4z5_z3(const series &z3, const series &z4)
+{
+    const ::std::int64_t truncation_degree = z3.get_truncation_degree();
+    const ::obake::symbol_set amp_vars{"X", "Xc"};
+
+    pser_t z3_ser = z3.get_series();
+    ::obake::set_truncation(z3_ser, truncation_degree, amp_vars);
+    pser_t z4_template = z4.get_series();
+    ::obake::unset_truncation(z4_template);
+
+    ::obake::symbol_map<pser_t> subs_map{{"z3", z3_ser}};
+    pser_t result = ::obake::trim(::obake::subs(z4_template, subs_map));
+    ::obake::set_truncation(result, truncation_degree, amp_vars);
+    ::obake::symbol_set result_vars = result.get_symbol_set();
+    return series{::std::move(result), truncation_degree, ::std::move(result_vars)};
+}
+
 const pser_t &series::get_series() const
 {
     return m_series;
