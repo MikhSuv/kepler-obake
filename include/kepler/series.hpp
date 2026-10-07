@@ -123,6 +123,9 @@ public:
     /// @return the truncated series of \f$z_5\f$.
     [[nodiscard]] static series z5(::std::int64_t truncation_degree);
 
+    [[nodiscard]] static series r_over_a(::std::int64_t truncation_degree);
+    [[nodiscard]] static series a_over_r(::std::int64_t truncation_degree);
+
     /// Close the @ref z3 template by substituting the series of \f$z_1\f$ and
     /// \f$z_2\f$ into it.
     ///

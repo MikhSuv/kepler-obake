@@ -199,6 +199,27 @@ series series::z5(::std::int64_t truncation_degree)
     return series{::std::move(z5_ser), truncation_degree, z_vars};
 }
 
+series series::r_over_a(::std::int64_t truncation_degree)
+{
+    const auto [Z1, Z2, Z4, Z5] = ::obake::make_p_series<pser_t>("z1", "z2", "z4", "z5");
+    auto r_over_a = pser_t{1} - Z2 * Z5 + Z1 * Z4;
+    ::obake::set_truncation(r_over_a, truncation_degree, r_over_a.get_symbol_set());
+    return series{::std::move(r_over_a), truncation_degree, r_over_a.get_symbol_set()};
+}
+
+series series::a_over_r(::std::int64_t truncation_degree)
+{
+    const auto [Z1, Z2, Z4, Z5] = ::obake::make_p_series<pser_t>("z1", "z2", "z4", "z5");
+    const ::obake::symbol_set z_vars{"z1", "z2", "z4", "z5"};
+    const auto [tmp] = ::obake::make_p_series<pser_t>("t");
+    auto a_r = detail::geometric_series(tmp, truncation_degree);
+    ::obake::symbol_map<pser_t> subs_map{{"t", Z2 * Z5 - Z1 * Z4}};
+    pser_t a_over_r{};
+    ::obake::set_truncation(a_over_r, truncation_degree, z_vars);
+    a_over_r = ::obake::trim(::obake::subs(::std::move(a_r), subs_map));
+    return series{::std::move(a_over_r), truncation_degree, a_over_r.get_symbol_set()};
+}
+
 series series::z3_z1z2(const series &z1, const series &z2, const series &z3)
 {
     // The truncation degree of the z1/z2 expansions bounds the degree of the
