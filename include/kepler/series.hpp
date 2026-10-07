@@ -285,6 +285,8 @@ namespace detail
 /// @return the truncated Taylor expansion.
 [[nodiscard]] pser_t cos(const pser_t &base, ::std::int64_t truncation_degree);
 
+[[nodiscard]] pser_t geometric_series(const pser_t &base, ::std::int64_t truncation_degree);
+
 } // namespace detail
 
 } // namespace kepler

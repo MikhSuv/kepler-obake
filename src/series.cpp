@@ -71,6 +71,15 @@ pser_t cos(const pser_t &base, ::std::int64_t truncation_degree)
     return cos_series;
 }
 
+pser_t geometric_series(const pser_t &base, ::std::int64_t truncation_degree)
+{
+    pser_t geometric{1};
+    for (::std::int64_t order = 1; order <= truncation_degree; ++order) {
+        geometric += ::obake::pow(base, order);
+    }
+    return geometric;
+}
+
 } // namespace detail
 
 series::series(pser_t ser, ::std::int64_t truncation_degree, ::obake::symbol_set variables)
