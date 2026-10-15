@@ -220,6 +220,23 @@ series series::a_over_r(::std::int64_t truncation_degree)
     return series{::std::move(a_over_r), truncation_degree, a_over_r.get_symbol_set()};
 }
 
+series series::r_a_x(const series &z1, const series &z2, const series &z4, const series &z5,
+                     const series &r_a)
+{
+    const ::std::int64_t truncation_degree = z1.get_truncation_degree();
+    const ::obake::symbol_set amp_vars{"X", "Xc"};
+    pser_t r_a_template = r_a.get_series();
+    ::obake::unset_truncation(r_a_template);
+    ::obake::symbol_map<pser_t> subs_map{{"z1", z1.get_series()},
+                                         {"z2", z2.get_series()},
+                                         {"z4", z4.get_series()},
+                                         {"z5", z4.get_series()}};
+    pser_t result = ::obake::trim(::obake::subs(r_a_template, subs_map));
+    ::obake::set_truncation(result, truncation_degree, amp_vars);
+    ::obake::symbol_set result_vars = result.get_symbol_set();
+    return series{::std::move(result), truncation_degree, ::std::move(result_vars)};
+}
+
 series series::z3_z1z2(const series &z1, const series &z2, const series &z3)
 {
     // The truncation degree of the z1/z2 expansions bounds the degree of the

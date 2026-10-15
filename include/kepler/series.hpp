@@ -125,6 +125,8 @@ public:
 
     [[nodiscard]] static series r_over_a(::std::int64_t truncation_degree);
     [[nodiscard]] static series a_over_r(::std::int64_t truncation_degree);
+    [[nodiscard]] static series r_a_x(const series &z1, const series &z2, const series &z4,
+                                      const series &z5, const series &r_a);
 
     /// Close the @ref z3 template by substituting the series of \f$z_1\f$ and
     /// \f$z_2\f$ into it.

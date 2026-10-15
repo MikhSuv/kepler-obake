@@ -9,3 +9,6 @@ target_link_libraries(z4_z5 PRIVATE kepler)
 
 add_executable(tabulate evaluate.cpp)
 target_link_libraries(tabulate PRIVATE kepler)
+
+add_executable(a_r a_r.cpp)
+target_link_libraries(a_r PRIVATE kepler)
