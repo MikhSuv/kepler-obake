@@ -15,17 +15,35 @@ void tabulate(const kepler::series &z_series, auto &&exact_func, const std::stri
 int main()
 {
     ::std::cout.precision(16);
-    auto z1 = kepler::series::load("z1.txt");
-    auto z2 = kepler::series::load("z2.txt");
-    auto z3 = kepler::series::load("z3.txt");
-    auto z4 = kepler::series::load("z4.txt");
-    auto z5 = kepler::series::load("z5.txt");
+    {
+        auto z1 = kepler::series::load("z1.txt");
+        tabulate(z1, kepler::exact_kepler::z1, "tabulate_z1.txt");
+    }
+    {
+        auto z2 = kepler::series::load("z2.txt");
+        tabulate(z2, kepler::exact_kepler::z2, "tabulate_z2.txt");
+    }
+    {
+        auto z3 = kepler::series::load("z3.txt");
+        tabulate(z3, kepler::exact_kepler::z3, "tabulate_z3.txt");
+    }
+    {
+        auto z4 = kepler::series::load("z4.txt");
+        tabulate(z4, kepler::exact_kepler::z4, "tabulate_z4.txt");
+    }
+    {
+        auto z5 = kepler::series::load("z5.txt");
+        tabulate(z5, kepler::exact_kepler::z5, "tabulate_z5.txt");
+    }
+    {
+        auto a_r = kepler::series::load("a_r.txt");
+        tabulate(a_r, kepler::exact_kepler::a_over_r, "tabulate_ar.txt");
+    }
+    {
+        auto r_a = kepler::series::load("r_a.txt");
+        tabulate(r_a, kepler::exact_kepler::r_over_a, "tabulate_ra.txt");
+    }
 
-    tabulate(z1, kepler::exact_kepler::z1, "tabulate_z1.txt");
-    tabulate(z2, kepler::exact_kepler::z2, "tabulate_z2.txt");
-    tabulate(z3, kepler::exact_kepler::z3, "tabulate_z3.txt");
-    tabulate(z4, kepler::exact_kepler::z4, "tabulate_z4.txt");
-    tabulate(z5, kepler::exact_kepler::z5, "tabulate_z5.txt");
     return 0;
 }
 

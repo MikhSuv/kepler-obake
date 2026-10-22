@@ -230,7 +230,7 @@ series series::r_a_x(const series &z1, const series &z2, const series &z4, const
     ::obake::symbol_map<pser_t> subs_map{{"z1", z1.get_series()},
                                          {"z2", z2.get_series()},
                                          {"z4", z4.get_series()},
-                                         {"z5", z4.get_series()}};
+                                         {"z5", z5.get_series()}};
     pser_t result = ::obake::trim(::obake::subs(r_a_template, subs_map));
     ::obake::set_truncation(result, truncation_degree, amp_vars);
     ::obake::symbol_set result_vars = result.get_symbol_set();

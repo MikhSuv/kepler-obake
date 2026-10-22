@@ -58,4 +58,14 @@ kepler::real_t z5(const kepler::real_t &eccentricity, const kepler::real_t &mean
     return ::mppp::cos(z3(eccentricity, mean_anomaly));
 }
 
+kepler::real_t r_over_a(const kepler::real_t &eccentricity, const kepler::real_t &mean_anomaly)
+{
+    return real_t{1 - eccentricity * mppp::cos(z3(eccentricity, mean_anomaly) + mean_anomaly)};
+}
+
+kepler::real_t a_over_r(const kepler::real_t &eccentricity, const kepler::real_t &mean_anomaly)
+{
+    return real_t{1 / r_over_a(eccentricity, mean_anomaly)};
+}
+
 } // namespace kepler::exact_kepler

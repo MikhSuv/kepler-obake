@@ -4,7 +4,7 @@
 
 int main()
 {
-    constexpr int degree = 100;
+    constexpr int degree = 50;
     auto z1 = kepler::series::z1(degree);
     std::cout << "z1 series has been created, term number: " << z1.get_series().size() << '\n';
     auto z2 = kepler::series::z2(degree);
